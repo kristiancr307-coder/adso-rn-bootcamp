@@ -1,43 +1,44 @@
-// ============================================================
-// MOCK DATA — src/data/mockData.ts
-// ============================================================
-// Datos de ejemplo para tu dominio asignado.
-// Reemplaza estos datos con información coherente a tu dominio.
-// ============================================================
+import { Book } from '../types';
 
-import { Item } from '../types';
-
-// TODO: Reemplaza los valores por datos reales de tu dominio
-// Usa imágenes representativas — puedes usar URLs de picsum.photos
-// o incluir imágenes locales en assets/
-
-export const MOCK_ITEMS: Item[] = [
+export const MOCK_ITEMS: Book[] = [
   {
     id: '1',
-    name: 'Nombre del elemento 1',
-    subtitle: 'Subtítulo o descripción corta',
-    imageUri: 'https://picsum.photos/seed/item1/300/200',
-    // TODO: Agrega las propiedades específicas de tu dominio
+    name: 'Cien Años de Soledad',
+    subtitle: 'La historia de la familia Buendía',
+    imageUri: 'https://picsum.photos/seed/libro1/300/450',
+    author: 'Gabriel García Márquez',
+    year: 1967,
+    genre: 'Realismo mágico',
+    price: 45000,
   },
   {
     id: '2',
-    name: 'Nombre del elemento 2',
-    subtitle: 'Subtítulo o descripción corta',
-    imageUri: 'https://picsum.photos/seed/item2/300/200',
-    // TODO: Agrega las propiedades específicas de tu dominio
+    name: 'El Amor en los Tiempos del Cólera',
+    subtitle: 'Un romance que desafía el tiempo',
+    imageUri: 'https://picsum.photos/seed/libro2/300/450',
+    author: 'Gabriel García Márquez',
+    year: 1985,
+    genre: 'Novela romántica',
+    price: 42000,
   },
   {
     id: '3',
-    name: 'Nombre del elemento 3',
-    subtitle: 'Subtítulo o descripción corta',
-    imageUri: 'https://picsum.photos/seed/item3/300/200',
-    // TODO: Agrega las propiedades específicas de tu dominio
+    name: 'La Casa de los Espíritus',
+    subtitle: 'Cuatro generaciones marcadas por el destino',
+    imageUri: 'https://picsum.photos/seed/libro3/300/450',
+    author: 'Isabel Allende',
+    year: 1982,
+    genre: 'Realismo mágico',
+    price: 39000,
   },
   {
     id: '4',
-    name: 'Nombre del elemento 4',
-    subtitle: 'Subtítulo o descripción corta',
-    imageUri: 'https://picsum.photos/seed/item4/300/200',
-    // TODO: Agrega las propiedades específicas de tu dominio
+    name: 'Pedro Páramo',
+    subtitle: 'Un viaje a un pueblo habitado por fantasmas',
+    imageUri: 'https://picsum.photos/seed/libro4/300/450',
+    author: 'Juan Rulfo',
+    year: 1955,
+    genre: 'Novela',
+    price: 35000,
   },
 ];
