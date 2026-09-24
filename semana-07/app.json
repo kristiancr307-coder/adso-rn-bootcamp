@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Week 07 — Persistencia Local",
+    "slug": "week07-persistencia-local",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1526"
+      }
+    }
+  }
+}
