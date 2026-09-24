@@ -1,0 +1,146 @@
+// src/screens/HomeScreen.tsx
+// Catálogo de libros con pull-to-refresh y acceso a Create / Edit.
+// Toca una fila → abre el formulario Edit de ese libro.
+
+import React from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '../theme';
+import { useItems } from '../hooks/useItems';
+import type { Item } from '../types';
+import type { RootStackParamList } from '../navigation/types';
+
+type HomeNavProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
+// ──────────────────────────────────────────────
+// PANTALLA
+// ──────────────────────────────────────────────
+
+export function HomeScreen(): React.JSX.Element {
+  const navigation = useNavigation<HomeNavProp>();
+  const { data, isLoading, isError, isFetching, refetch } = useItems();
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={COLORS.accent} />
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.errorText}>No se pudo cargar el catálogo</Text>
+        <Pressable style={styles.retryBtn} onPress={() => void refetch()}>
+          <Text style={styles.retryText}>Reintentar</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
+  return (
+    <FlatList
+      style={styles.list}
+      contentContainerStyle={styles.content}
+      data={data ?? []}
+      keyExtractor={(book) => String(book.id)}
+      refreshing={isFetching && !isLoading}
+      onRefresh={refetch}
+      ListEmptyComponent={
+        <Text style={styles.empty}>No hay libros aún. Toca + para crear el primero.</Text>
+      }
+      ListHeaderComponent={
+        data?.length
+          ? <Text style={styles.count}>{data.length} libros en catálogo</Text>
+          : null
+      }
+      renderItem={({ item }) => (
+        <BookRow
+          book={item}
+          onPress={() =>
+            navigation.navigate('Edit', { id: item.id, name: item.name })
+          }
+        />
+      )}
+    />
+  );
+}
+
+// ──────────────────────────────────────────────
+// SUB-COMPONENTE: fila de libro
+// ──────────────────────────────────────────────
+
+interface BookRowProps { book: Item; onPress: () => void }
+
+function BookRow({ book, onPress }: BookRowProps): React.JSX.Element {
+  return (
+    <Pressable
+      style={({ pressed }) => [styles.row, pressed && { opacity: 0.7 }]}
+      onPress={onPress}
+    >
+      <View style={styles.rowLeft}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarLetter}>{book.name.charAt(0).toUpperCase()}</Text>
+        </View>
+        <View style={styles.rowText}>
+          <Text style={styles.rowTitle} numberOfLines={1}>{book.name}</Text>
+          <Text style={styles.rowSub} numberOfLines={1}>
+            {book.author} · {book.year > 0 ? book.year : 's.f.'} · {book.genre}
+          </Text>
+        </View>
+      </View>
+      <Text style={styles.price}>
+        {book.price > 0 ? `$${book.price.toFixed(2)}` : '—'}
+      </Text>
+    </Pressable>
+  );
+}
+
+// ──────────────────────────────────────────────
+// ESTILOS
+// ──────────────────────────────────────────────
+
+const styles = StyleSheet.create({
+  list: { flex: 1, backgroundColor: COLORS.background },
+  content: { padding: SPACING.lg, gap: SPACING.sm, paddingBottom: SPACING.xxl },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, backgroundColor: COLORS.background },
+  errorText: { ...TYPOGRAPHY.h3, color: COLORS.errorLight },
+  retryBtn: { backgroundColor: COLORS.accent, borderRadius: RADIUS.sm, paddingHorizontal: SPACING.xl, paddingVertical: SPACING.sm },
+  retryText: { ...TYPOGRAPHY.body, fontWeight: '600', color: COLORS.background },
+  empty: { ...TYPOGRAPHY.caption, textAlign: 'center', marginTop: SPACING.xxl },
+  count: { ...TYPOGRAPHY.label, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: SPACING.sm },
+  row: {
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: SPACING.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  rowLeft: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, flex: 1 },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarLetter: { ...TYPOGRAPHY.h3, color: COLORS.accent },
+  rowText: { flex: 1 },
+  rowTitle: { ...TYPOGRAPHY.body, fontWeight: '600' },
+  rowSub: { ...TYPOGRAPHY.caption },
+  price: { ...TYPOGRAPHY.body, fontWeight: '700', color: COLORS.accent, marginLeft: SPACING.sm },
+});
