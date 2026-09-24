@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Week 06 — Formularios y Validación",
+    "slug": "week06-formularios-validacion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0d1117"
+      }
+    }
+  }
+}
